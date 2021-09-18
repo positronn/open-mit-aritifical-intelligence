@@ -72,8 +72,10 @@ def depth_iter(expr):
 # Problem 2.3: Tree indexing
 
 def tree_ref(tree, index):
-    raise NotImplementedError
-
+    assert depth(tree) >= len(index), 'Non-valid index for referenced tree. Non compatible depth.'
+    for i in index:
+        tree = tree[i]
+    return tree
 
 # Section 3: Symbolic algebra
 
