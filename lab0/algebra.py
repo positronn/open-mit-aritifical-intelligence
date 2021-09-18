@@ -148,8 +148,10 @@ def multiply(expr1, expr2):
     """
     # Simple expressions that are not sums or products can be handled
     # in exactly the same way as products -- they just have one thing in them.
-    if not isinstance(expr1, Expression): expr1 = Product([expr1])
-    if not isinstance(expr2, Expression): expr2 = Product([expr2])
+    if not isinstance(expr1, Expression):
+        expr1 = Product([expr1])
+    if not isinstance(expr2, Expression):
+        expr2 = Product([expr2])
     return do_multiply(expr1, expr2)
 
 
@@ -173,6 +175,13 @@ def do_multiply(expr1, expr2):
     Look above for details on the Sum and Product classes. The Python operator
     '*' will not help you.
     """
-    # Replace this with your solution.
-    raise NotImplementedError
+    if isinstance(expr1, Sum) and isinstance(expr2, Sum):
+        return Sum([Product([term1, term2] for term1 in expr1).flatten()
+                                                for term2 in expr2]).flatten()
+    if isinstance(expr1, Sum) and isinstance(expr2, Product):
+        return Sum([Product([expr2, term]).flatten() for term in expr1]).flatten()
+    if isinstance(expr1, Product) and isinstance(expr2, Sum):
+        return do_multiply(expr2, expr1)
+    if isinstance(expr1, Product) and isinstance(expr2, Product):
+        return Product([expr1, expr2]).flatten()
 
